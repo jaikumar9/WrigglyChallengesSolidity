@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 contract UserRegistration {
@@ -10,7 +9,7 @@ contract UserRegistration {
     }
     
     // Define a mapping to store user information
-    mapping(address => UserInfo[]) private userMapping;
+    mapping(address => UserInfo) private userMapping;
     
     // Define an event to emit when a new user is registered
     event NewUserRegistered(address indexed userAddress, string name, string email);
@@ -31,33 +30,29 @@ contract UserRegistration {
     
     // Define a function to register user information
     function registerUser(string memory _name, string memory _email) public {
-        // TODO: Store user information in the mapping
-        // TODO: Emit event to notify that a new user is registered
-        UserInfo memory newUser   = UserInfo(_name,_email);
-        userMapping[msg.sender].push(newUser);
-      emit NewUserRegistered(msg.sender,_name,_email);
-      
+        // Store user information in the mapping
+        userMapping[msg.sender] = UserInfo(_name, _email);
+        // Emit event to notify that a new user is registered
+        emit NewUserRegistered(msg.sender, _name, _email);
     }
     
     // Define a function to retrieve user information
-    function getUserInfo() public view returns(UserInfo[] memory) {
-        // TODO: Retrieve user information from the mapping
-        // TODO: Return user information
-             return userMapping[msg.sender];
-            
-
+    function getUserInfo() public view returns (string memory name, string memory email) {
+        // Retrieve user information from the mapping
+        UserInfo memory user = userMapping[msg.sender];
+        // Return user information
+        return (user.name, user.email);
     }
     
     // Define a function to update user information
     function updateUserInfo(string memory _name, string memory _email) public {
-        // TODO: Update user information in the mapping
-         UserInfo memory newUser   = UserInfo(_name,_email);
-          userMapping[msg.sender].push(newUser);
+        // Update user information in the mapping
+        userMapping[msg.sender] = UserInfo(_name, _email);
     }
     
     // Define a function to delete user information
     function deleteUser() public {
-        // TODO: Delete user information from the mapping
+        // Delete user information from the mapping
         delete userMapping[msg.sender];
     }
 }
