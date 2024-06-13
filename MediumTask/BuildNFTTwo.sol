@@ -8,18 +8,17 @@ contract MyNFT is ERC721 {
     using SafeMath for uint256;
 
     mapping(uint256 => address) private _tokenOwner;
-    mapping(address => uint256) public nftMinted;
+    mapping(uint256 => string) private _tokenIPFSHash;
 
     constructor(
         string memory name,
         string memory symbol
     ) ERC721(name, symbol) {}
 
-    function mint(address to, uint256 tokenId) public {
+    function mint(address to, uint256 tokenId, string memory ipfsHash) public {
         // TODO
-          _safeMint(to,tokenId);
-         _tokenOwner[tokenId] = to;
-      nftMinted[to]++;
+      _mint(to,tokenId) ;
+      _setTokenIPFSHash(tokenId,ipfsHash);
     }
 
     function ownerOf(
@@ -27,5 +26,20 @@ contract MyNFT is ERC721 {
     ) public view virtual override returns (address) {
         // TODO
       return _tokenOwner[tokenId];
+    }
+
+    function tokenIPFSHash(
+        uint256 tokenId
+    ) public view returns (string memory) {
+        // TODO
+    return  _tokenIPFSHash[tokenId];
+    }
+
+    function _setTokenIPFSHash(
+        uint256 tokenId,
+        string memory ipfsHash
+    ) internal {
+        // TODO
+       _tokenIPFSHash[tokenId] = ipfsHash;
     }
 }
